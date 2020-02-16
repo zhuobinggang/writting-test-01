@@ -1,4 +1,3 @@
-
 //// TESTED START
 const cut = (str, cutStart, cutEnd) => {
   return str.substr(0,cutStart) + str.substr(cutEnd+1);
@@ -88,7 +87,8 @@ const isCompositeType = (str) => {
 }
 
 const isPrimitiveType = (str) => {
-  return ['int','string','bool'].includes(str);
+  //lowercase + number
+  return /^[a-z]\w+$/.test(str)
 }
 
 const isCollectioinType = (str) => {
@@ -98,13 +98,6 @@ const isCollectioinType = (str) => {
 const collectionType = (str) => {
   return memoriseDeleteAllPairs(str)
 }
-////TESTED END
-
-
-
-
-
-
 
 const collectionInnerTypes = (str) => {
   const start = str.search('<')
@@ -116,8 +109,7 @@ const parse = (str) => {
   str = str.trim();
   if(isCompositeType(str)){//Pattern 1: composite type like 'a, b'
     //return a list
-    const splitedTypes = splitedCompositeTypes(str)
-    return splitedTypes.map(parse)
+    return splitedCompositeTypes(str).map(parse)
   }else{//Pattern 2: integrated type like 'a'
     if(isPrimitiveType(str)){//Pattern 2.1: primitive type like 'int'
       return {type: str}
@@ -130,15 +122,19 @@ const parse = (str) => {
   }
 }
 
+////TESTED END
+
 const testCase = [
   "Map<Map<string, bool>, bool>", 
   "Map<string, Map<string, bool>>", 
+  "Map<string, Map<string, bool, int, bool>>", 
   "Array<Array<Array<int>>>",
   "Array<Array<int>>",
   "Array<int>",
   "bool",
   "string",
-  "int"
+  "int",
+  "Map<int, bool, int, string>",
 ]
 
 module.exports = {
