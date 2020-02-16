@@ -59,7 +59,13 @@ const firstCompositeType = (str) => { //Find first type in the 'a, b', return fi
       return [str.slice(0, firstComma).trim(), str.slice(firstComma + 1).trim()]
     }else if(firstLT < firstComma){
       const end = findPairEnd(str,firstLT);
-      return [str.slice(0, end+1).trim(), str.slice(end + 2).trim()]
+      const first = str.slice(0, end+1).trim();
+      const restWithoutComma = (() => {
+        const rest = str.slice(end + 1);
+        const theComma = rest.search(',')
+        return rest.slice(theComma+1).trim()
+      })();
+      return [first, restWithoutComma]
     }
   }
 }
